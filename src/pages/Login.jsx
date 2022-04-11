@@ -1,6 +1,7 @@
 import { Form, Input, Button, InputNumber, Typography, Divider } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useHideMenu } from "../hooks/useHideMenu";
 const { Title, Text } = Typography;
 const layout = {
   labelCol: { span: 8 },
@@ -12,6 +13,7 @@ const tailLayout = {
 };
 
 const Login = () => {
+  useHideMenu(false);
   const navigate = useNavigate();
   const onFinish = (values) => {
     console.log("Success:", values);

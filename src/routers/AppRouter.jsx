@@ -18,6 +18,7 @@ const AppRouter = () => {
             <Route path="/queue" element={<Queue />} />
             <Route path="/create" element={<CreateTicket />} />
             <Route path="/desk" element={<Desk />} />
+            <Route path="*" element={<Login />} />
           </Routes>
         </Layout>
       </Suspense>

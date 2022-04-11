@@ -5,13 +5,16 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { UIContext } from "../context/UIContext";
 
 const { Sider, Content } = Layout;
 
 const SideLayout = ({ children }) => {
+  const { isVisible } = useContext(UIContext);
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider>
+      <Sider trigger={null} collapsible collapsed={false} hidden={isVisible}>
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
           <Menu.Item key="1" icon={<UserOutlined />}>
