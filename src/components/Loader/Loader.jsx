@@ -1,9 +1,15 @@
 import React from "react";
 import { Spin } from "antd";
-import styles from "./Loader.module.css";
+
+const styles = {
+  height: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
 const Loader = () => {
   return (
-    <div className={styles.spin}>
+    <div style={styles}>
       <Spin size="large" />
     </div>
   );
