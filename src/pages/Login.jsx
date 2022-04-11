@@ -1,5 +1,6 @@
 import { Form, Input, Button, InputNumber, Typography, Divider } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 const { Title, Text } = Typography;
 const layout = {
   labelCol: { span: 8 },
@@ -11,8 +12,10 @@ const tailLayout = {
 };
 
 const Login = () => {
+  const navigate = useNavigate();
   const onFinish = (values) => {
     console.log("Success:", values);
+    navigate("/desk");
   };
 
   const onFinishFailed = (errorInfo) => {
