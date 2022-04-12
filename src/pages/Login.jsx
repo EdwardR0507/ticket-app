@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { Form, Input, Button, InputNumber, Typography, Divider } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useHideMenu } from "../hooks/useHideMenu";
 const { Title, Text } = Typography;
 const layout = {
@@ -13,16 +14,24 @@ const tailLayout = {
 };
 
 const Login = () => {
+  const userLocalStorage = JSON.parse(window.localStorage.getItem("user"));
+  const [user] = useState(userLocalStorage);
+
   useHideMenu(false);
   const navigate = useNavigate();
+
   const onFinish = (values) => {
-    console.log("Success:", values);
+    window.localStorage.setItem("user", JSON.stringify(values));
     navigate("/desk");
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  if (user) {
+    return <Navigate to="/desk" />;
+  }
 
   return (
     <>
@@ -46,8 +55,8 @@ const Login = () => {
         </Form.Item>
 
         <Form.Item
-          label="Desk"
-          name="Desk"
+          label="desk"
+          name="desk"
           rules={[{ required: true, message: "Please enter desk's number" }]}
         >
           <InputNumber min={1} max={99} />
