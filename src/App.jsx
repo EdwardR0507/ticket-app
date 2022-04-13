@@ -1,11 +1,14 @@
+import { SocketProvider } from "./context/SocketContext";
 import { UIProvider } from "./context/UIContext";
 import AppRouter from "./routers/AppRouter";
 
 function App() {
   return (
-    <UIProvider>
-      <AppRouter />
-    </UIProvider>
+    <SocketProvider>
+      <UIProvider>
+        <AppRouter />
+      </UIProvider>
+    </SocketProvider>
   );
 }
 
