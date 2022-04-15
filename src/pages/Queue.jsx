@@ -1,27 +1,31 @@
+import { useContext, useEffect, useState } from "react";
 import { Col, Row, Typography, List, Card, Tag, Divider } from "antd";
+import { SocketContext } from "../context/SocketContext";
 import { useHideMenu } from "../hooks/useHideMenu";
+import { getLastest } from "../helpers/getLastest";
 
 const { Title, Text } = Typography;
 
-const data = [
-  {
-    ticketNo: 34,
-    desk: 4,
-    agent: "Melissa Flores",
-  },
-  {
-    ticketNo: 35,
-    desk: 5,
-    agent: "Carlos Castro",
-  },
-  {
-    ticketNo: 35,
-    desk: 6,
-    agent: "Edward Ramos",
-  },
-];
 const Queue = () => {
   useHideMenu(true);
+
+  const { socket } = useContext(SocketContext);
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    getLastest().then((tickets) => {
+      setTickets(tickets);
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("tickets-assigned", (assigneds) => {
+      setTickets(assigneds);
+    });
+    return () => {
+      socket.off("tickets-assigned");
+    };
+  }, [socket]);
 
   return (
     <>
@@ -29,17 +33,17 @@ const Queue = () => {
       <Row>
         <Col span={12}>
           <List
-            dataSource={data.slice(0, 2)}
+            dataSource={tickets.slice(0, 2)}
             renderItem={(item) => (
               <List.Item>
                 <Card
                   style={{ width: 300, marginTop: 16 }}
                   actions={[
                     <Tag color="volcano"> {item.agent} </Tag>,
-                    <Tag color="magenta"> desk: {item.desk} </Tag>,
+                    <Tag color="magenta"> Desk: {item.desk} </Tag>,
                   ]}
                 >
-                  <Title> No. {item.ticketNo}</Title>
+                  <Title> No. {item.number}</Title>
                 </Card>
               </List.Item>
             )}
@@ -53,15 +57,15 @@ const Queue = () => {
               height: "calc(100vh - 300px)",
               overflowY: "auto",
             }}
-            dataSource={data.slice(2)}
+            dataSource={tickets.slice(2)}
             renderItem={(item) => (
               <List.Item>
                 <List.Item.Meta
-                  title={`Ticket No. ${item.ticketNo}`}
+                  title={`Ticket No. ${item.number}`}
                   description={
                     <>
                       <Text type="secondary">On the desk: </Text>
-                      <Tag color="magenta"> {item.ticketNo} </Tag>
+                      <Tag color="magenta"> {item.number} </Tag>
                       <Text type="secondary"> Agent: </Text>
                       <Tag color="volcano"> {item.agent} </Tag>
                     </>
